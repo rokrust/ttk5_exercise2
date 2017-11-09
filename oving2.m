@@ -3,13 +3,15 @@ h_imu = 0.01;
 h_gps = 0.1;
 n = 3;
 
-w_a = wgn(1, 3);
-w_w = wgn(1, 3);
-w_x = wgn(1, 3);
-w_theta = wgn(1, 3);
+w_a = wgn(1, 1);
+w_w = wgn(1, 1);
+w_x = wgn(1, 1);
+w_theta = wgn(1, 1);
 
 for t = 0:h:t_end
-    [a, w] = true_mes(t);
+    u = true_mes(t);
+    a = u(1);
+    w = u(2);
     
     %True values
     v = v + a*h;
@@ -29,9 +31,19 @@ for t = 0:h:t_end
     %b2 = -b2/T_1*h;
     
 end
-A = [0 1 0 0;]
-     
+A = [0  0   0   0   0;
+     1  0   0   0   0;
+     0  0   0   0   0;
+     0  0   0 -1/T_1 0;
+     0  0   0   0 -1/T_2];
 
+B = [1 0;
+     0 0;
+     0 1;
+     0 0;
+     0 0];
+     
+%x = [v; x; theta; b1; b2];
 
 %Time update
 x = A*x + B*u;
