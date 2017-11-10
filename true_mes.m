@@ -6,5 +6,5 @@ function u = true_mes(t)
         a = 0;
     end
     
-    u = [a; w]
+    u = [a; w];
 end
